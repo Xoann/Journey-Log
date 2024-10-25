@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { DataAccess, Activity } from "@/utils/dataAccess";
 import { formatDate, formatTime } from "@/utils/formatters";
+import HeatmapCalendar from "@/components/HeatmapCalendar";
+import NumberInput from "@/components/NumberInput";
 
 interface ActivityProgressViewProps {
   activityId: string;
@@ -28,10 +30,23 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
 
   useEffect(() => {
     if (activity) {
+      setGoal(activity.goal); // Initialize goal from activity
       setGoalRate(activity.getGoalRate());
-      console.log(activity.getGoalRate());
     }
-  }, [goal]);
+  }, [activity]);
+
+  useEffect(() => {
+    if (activity) {
+      setGoalRate(activity.getGoalRate());
+
+      DataAccess.updateActivityGoal(activityId, goal);
+      const updatedActivity = DataAccess.getActivityById(activityId);
+      if (updatedActivity) {
+        setActivity(updatedActivity);
+        setGoalRate(updatedActivity.getGoalRate());
+      }
+    }
+  }, [goal, activityId]);
 
   const handleActivityViewClick = () => {
     setCurrView("activity");
@@ -47,22 +62,23 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
     }
   };
 
-  const updateGoal = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newGoal = Number(e.target.value);
-    setGoal(newGoal);
-    if (activity) {
-      DataAccess.updateActivityGoal(activityId, newGoal);
-      const updatedActivity = DataAccess.getActivityById(activityId);
-      if (updatedActivity) {
-        setActivity(updatedActivity);
-        setGoalRate(updatedActivity.getGoalRate());
-      }
-    }
-  };
+  // const updateGoal = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newGoal = Number(e.target.value);
+  //   setGoal(newGoal);
+  //   if (activity) {
+  //     DataAccess.updateActivityGoal(activityId, newGoal);
+  //     const updatedActivity = DataAccess.getActivityById(activityId);
+  //     if (updatedActivity) {
+  //       setActivity(updatedActivity);
+  //       setGoalRate(updatedActivity.getGoalRate());
+  //     }
+  //   }
+  // };
 
   const renderActivityDetails = () => {
     return (
       <div>
+        <button onClick={() => console.log("goal:", goal)}>TEST</button>
         <div>
           <h1>{activity?.name}</h1>
           <p>Cumulative Time: {activity?.getCumulative()}</p>
@@ -70,11 +86,18 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
           <p>Total days: {activity?.getTotalTrackedDays()}</p>
           <p>Percentage goal hit: {goalRate}</p>
           <p>Daily goal:</p>
-          <input
+          {/* <input
             type="number"
             onChange={updateGoal}
             className="text-black"
+            placeholder="0"
             value={goal}
+          /> */}
+          <NumberInput
+            value={goal}
+            onChange={setGoal}
+            placeholder="0"
+            min={0}
           />
         </div>
         <div>
@@ -83,15 +106,20 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
             type="date"
             value={entryDate}
             onChange={(e) => setEntryDate(e.target.value)}
+            className="text-black"
           />
           <input
             type="number"
             value={timeSpent}
             onChange={(e) => setTimeSpent(Number(e.target.value))}
+            className="text-black"
             placeholder="Time spent"
           />
           <button onClick={handleAddEntry}>Add Entry</button>
         </div>
+
+        {activity != null ? <HeatmapCalendar activity={activity} /> : null}
+
         <div>
           {activity?.entries.map((entry) => (
             <div key={entry.id} className="flex">

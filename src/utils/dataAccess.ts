@@ -61,9 +61,7 @@ export class Activity implements ActivityInterface {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
 
-  getGoalRate(): number {
-    if (this.entries.length === 0) return 0;
-
+  getEntriesSet(): Map<string, number> {
     const dateMap = new Map<string, number>();
     this.entries.forEach((entry) => {
       if (dateMap.has(entry.date)) {
@@ -72,6 +70,13 @@ export class Activity implements ActivityInterface {
         dateMap.set(entry.date, entry.timeSpent);
       }
     });
+    return dateMap;
+  }
+
+  getGoalRate(): number {
+    if (this.entries.length === 0) return 0;
+
+    const dateMap = this.getEntriesSet();
 
     const daysOverGoal = Array.from(dateMap.values()).filter(
       (totalTime) => totalTime >= this.goal
