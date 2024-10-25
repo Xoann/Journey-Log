@@ -10,6 +10,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        text: "#eee",
+        background: "#111",
         lime: {
           default: "#3B3C36",
           low: "#C6F8A3",

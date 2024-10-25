@@ -4,6 +4,10 @@ import { DataAccess, Activity } from "@/utils/dataAccess";
 import { formatDate, formatTime } from "@/utils/formatters";
 import HeatmapCalendar from "@/components/HeatmapCalendar";
 import NumberInput from "@/components/NumberInput";
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
+import { useTheme } from "@/context/ThemeContext";
+import StyledDatePicker from "@/components/StyledDatePicker";
 
 interface ActivityProgressViewProps {
   activityId: string;
@@ -14,10 +18,10 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
   activityId,
   setCurrView,
 }) => {
+  const { currentTheme } = useTheme();
+
   const [activity, setActivity] = useState<Activity | null>(null);
-  const [entryDate, setEntryDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
+  const [date, setDate] = React.useState<Dayjs | null>(null);
   const [timeSpent, setTimeSpent] = useState<number>(0);
   const [goal, setGoal] = useState<number>(activity?.goal || 0);
   const [goalRate, setGoalRate] = useState<number>(0);
@@ -54,45 +58,59 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
 
   const handleAddEntry = () => {
     if (activity) {
+      const entryDate = date?.toISOString().split("T")[0] || "";
       DataAccess.addActivityEntry(activityId, entryDate, timeSpent);
       const updatedActivity = DataAccess.getActivityById(activityId);
       setActivity(updatedActivity || null);
-      setEntryDate(new Date().toISOString().split("T")[0]);
+      setDate(null);
       setTimeSpent(0);
     }
   };
 
-  // const updateGoal = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newGoal = Number(e.target.value);
-  //   setGoal(newGoal);
-  //   if (activity) {
-  //     DataAccess.updateActivityGoal(activityId, newGoal);
-  //     const updatedActivity = DataAccess.getActivityById(activityId);
-  //     if (updatedActivity) {
-  //       setActivity(updatedActivity);
-  //       setGoalRate(updatedActivity.getGoalRate());
-  //     }
-  //   }
-  // };
+  const getShade = (actual: number, max: number): string => {
+    const percentage = (actual / max) * 100;
+    if (percentage >= 100) return currentTheme.highlightedTextColors.high;
+    if (percentage >= 75) return currentTheme.highlightedTextColors.mediumHigh;
+    if (percentage >= 50) return currentTheme.highlightedTextColors.medium;
+    if (percentage >= 25) return currentTheme.highlightedTextColors.mediumLow;
+    return currentTheme.highlightedTextColors.low;
+  };
 
   const renderActivityDetails = () => {
     return (
       <div>
-        <button onClick={() => console.log("goal:", goal)}>TEST</button>
         <div>
           <h1>{activity?.name}</h1>
-          <p>Cumulative Time: {activity?.getCumulative()}</p>
-          <p>Daily Average: {activity?.getDailyAvg()}</p>
-          <p>Total days: {activity?.getTotalTrackedDays()}</p>
-          <p>Percentage goal hit: {goalRate}</p>
+          <div className="flex">
+            <p>Cumulative Time: </p>
+            <p className={`${getShade(100, 100)} font-bold`}>
+              {activity?.getCumulative()}
+            </p>
+          </div>
+          <div className="flex">
+            <p>Daily Average: </p>
+            <p
+              className={`${getShade(
+                activity?.getDailyAvg() || 0,
+                goal
+              )} font-bold`}
+            >
+              {Math.floor(activity?.getDailyAvg() || 0)}
+            </p>
+          </div>
+          <div className="flex">
+            <p>Total days: </p>
+            <p className={`${getShade(100, 100)} font-bold`}>
+              {activity?.getTotalTrackedDays()}
+            </p>
+          </div>
+          <div className="flex">
+            <p>Percentage goal hit: </p>
+            <p className={`${getShade(goalRate, 100)} font-bold`}>
+              {Math.floor(goalRate)}
+            </p>
+          </div>
           <p>Daily goal:</p>
-          {/* <input
-            type="number"
-            onChange={updateGoal}
-            className="text-black"
-            placeholder="0"
-            value={goal}
-          /> */}
           <NumberInput
             value={goal}
             onChange={setGoal}
@@ -102,18 +120,12 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
         </div>
         <div>
           <p>Add entry:</p>
-          <input
-            type="date"
-            value={entryDate}
-            onChange={(e) => setEntryDate(e.target.value)}
-            className="text-black"
-          />
-          <input
-            type="number"
+          <StyledDatePicker date={date} onChange={setDate} />
+          <NumberInput
             value={timeSpent}
-            onChange={(e) => setTimeSpent(Number(e.target.value))}
-            className="text-black"
-            placeholder="Time spent"
+            onChange={setTimeSpent}
+            placeholder="0"
+            min={0}
           />
           <button onClick={handleAddEntry}>Add Entry</button>
         </div>

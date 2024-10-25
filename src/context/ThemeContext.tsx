@@ -1,6 +1,16 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import tailwindConfig from "../../tailwind.config";
 
-type HeatmapColors = {
+export enum Shade {
+  Default = "default",
+  Low = "low",
+  MediumLow = "mediumLow",
+  Medium = "medium",
+  MediumHigh = "mediumHigh",
+  High = "high",
+}
+
+type gradientColors = {
   default: string;
   low: string;
   mediumLow: string;
@@ -9,13 +19,35 @@ type HeatmapColors = {
   high: string;
 };
 
+type Colors = {
+  text: string;
+  background: string;
+  primary: string;
+};
+
 interface Theme {
   name: string;
-  heatmapColors: HeatmapColors;
+  colors: Colors;
+  highlightedTextColors: gradientColors;
+  heatmapColors: gradientColors;
+  getShade: (shade: Shade) => string;
 }
 
 const limeTheme: Theme = {
   name: "lime",
+  colors: {
+    text: "text-text",
+    background: "bg-background",
+    primary: "lime-medium",
+  },
+  highlightedTextColors: {
+    default: "text-text",
+    low: "text-lime-low",
+    mediumLow: "text-lime-mediumLow",
+    medium: "text-lime-medium",
+    mediumHigh: "text-lime-mediumHigh",
+    high: "text-lime-high",
+  },
   heatmapColors: {
     default: "bg-gray-800",
     low: "bg-lime-low",
@@ -24,10 +56,40 @@ const limeTheme: Theme = {
     mediumHigh: "bg-lime-mediumHigh",
     high: "bg-lime-high",
   },
+  getShade: (shade: Shade) => {
+    const shades = (tailwindConfig?.theme?.extend?.colors as any)?.lime;
+    switch (shade) {
+      case Shade.Low:
+        return shades.low;
+      case Shade.MediumLow:
+        return shades.mediumLow;
+      case Shade.Medium:
+        return shades.medium;
+      case Shade.MediumHigh:
+        return shades.mediumHigh;
+      case Shade.High:
+        return shades.high;
+      default:
+        return shades.default;
+    }
+  },
 };
 
 const iceTheme: Theme = {
   name: "ice",
+  colors: {
+    text: "text-text",
+    background: "bg-background",
+    primary: "ice-medium",
+  },
+  highlightedTextColors: {
+    default: "text-text",
+    low: "text-ice-low",
+    mediumLow: "text-ice-mediumLow",
+    medium: "text-ice-medium",
+    mediumHigh: "text-ice-mediumHigh",
+    high: "text-ice-high",
+  },
   heatmapColors: {
     default: "bg-gray-800",
     low: "bg-ice-low",
@@ -36,10 +98,40 @@ const iceTheme: Theme = {
     mediumHigh: "bg-ice-mediumHigh",
     high: "bg-ice-high",
   },
+  getShade: (shade: Shade) => {
+    const shades = (tailwindConfig?.theme?.extend?.colors as any)?.ice;
+    switch (shade) {
+      case Shade.Low:
+        return shades.low;
+      case Shade.MediumLow:
+        return shades.mediumLow;
+      case Shade.Medium:
+        return shades.medium;
+      case Shade.MediumHigh:
+        return shades.mediumHigh;
+      case Shade.High:
+        return shades.high;
+      default:
+        return shades.default;
+    }
+  },
 };
 
 const magentaTheme: Theme = {
   name: "magenta",
+  colors: {
+    text: "text-text",
+    background: "bg-background",
+    primary: "magenta-medium",
+  },
+  highlightedTextColors: {
+    default: "text-text",
+    low: "text-magenta-low",
+    mediumLow: "text-magenta-mediumLow",
+    medium: "text-magenta-medium",
+    mediumHigh: "text-magenta-mediumHigh",
+    high: "text-magenta-high",
+  },
   heatmapColors: {
     default: "bg-gray-800",
     low: "bg-magenta-low",
@@ -48,10 +140,40 @@ const magentaTheme: Theme = {
     mediumHigh: "bg-magenta-mediumHigh",
     high: "bg-magenta-high",
   },
+  getShade: (shade: Shade) => {
+    const shades = (tailwindConfig?.theme?.extend?.colors as any)?.magenta;
+    switch (shade) {
+      case Shade.Low:
+        return shades.low;
+      case Shade.MediumLow:
+        return shades.mediumLow;
+      case Shade.Medium:
+        return shades.medium;
+      case Shade.MediumHigh:
+        return shades.mediumHigh;
+      case Shade.High:
+        return shades.high;
+      default:
+        return shades.default;
+    }
+  },
 };
 
 const flameTheme: Theme = {
   name: "flame",
+  colors: {
+    text: "text-text",
+    background: "bg-background",
+    primary: "flame-medium",
+  },
+  highlightedTextColors: {
+    default: "text-text",
+    low: "text-flame-low",
+    mediumLow: "text-flame-mediumLow",
+    medium: "text-flame-medium",
+    mediumHigh: "text-flame-mediumHigh",
+    high: "text-flame-high",
+  },
   heatmapColors: {
     default: "bg-gray-800",
     low: "bg-flame-low",
@@ -59,6 +181,23 @@ const flameTheme: Theme = {
     medium: "bg-flame-medium",
     mediumHigh: "bg-flame-mediumHigh",
     high: "bg-flame-high",
+  },
+  getShade: (shade: Shade) => {
+    const shades = (tailwindConfig?.theme?.extend?.colors as any)?.flame;
+    switch (shade) {
+      case Shade.Low:
+        return shades.low;
+      case Shade.MediumLow:
+        return shades.mediumLow;
+      case Shade.Medium:
+        return shades.medium;
+      case Shade.MediumHigh:
+        return shades.mediumHigh;
+      case Shade.High:
+        return shades.high;
+      default:
+        return shades.default;
+    }
   },
 };
 
