@@ -8,6 +8,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { useTheme } from "@/context/ThemeContext";
 import StyledDatePicker from "@/components/StyledDatePicker";
+import StyledLineChart from "@/components/StyledLineChart";
 
 interface ActivityProgressViewProps {
   activityId: string;
@@ -130,6 +131,7 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
           <button onClick={handleAddEntry}>Add Entry</button>
         </div>
 
+        {activity != null ? <StyledLineChart activity={activity} /> : null}
         {activity != null ? <HeatmapCalendar activity={activity} /> : null}
 
         <div>

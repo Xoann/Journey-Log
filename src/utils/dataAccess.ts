@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export interface ActivityInterface {
   id: string;
   name: string;
@@ -71,6 +73,34 @@ export class Activity implements ActivityInterface {
       }
     });
     return dateMap;
+  }
+
+  getEntryCumulativeData(): { dates: string[]; timeSpent: number[] } {
+    const dateMap = new Map<string, number>(
+      Array.from(this.getEntriesSet()).map(([date, timeSpent]) => [
+        dayjs(date).format("YYYY-MM-DD"),
+        timeSpent,
+      ])
+    );
+
+    const sortedDateMap = new Map(
+      Array.from(dateMap.entries()).sort(([dateA], [dateB]) =>
+        dayjs(dateA).isBefore(dayjs(dateB)) ? -1 : 1
+      )
+    );
+
+    const dates = Array.from(sortedDateMap.keys());
+    const timeSpent = Array.from(sortedDateMap.values());
+
+    // Calculate cumulative time spent
+    const cumulativeTimeSpent: number[] = [];
+    timeSpent.reduce((acc, current, index) => {
+      const cumulative = acc + current;
+      cumulativeTimeSpent.push(cumulative);
+      return cumulative;
+    }, 0);
+
+    return { dates, timeSpent: cumulativeTimeSpent };
   }
 
   getGoalRate(): number {

@@ -19,3 +19,12 @@ body {
   background: var(--background); */
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* FIXME band aid solution to spacing issue in line chart */
+.css-175e1i1-MuiChartsAxis-root-MuiChartsYAxis-root .MuiChartsAxis-label {
+  transform: translateX(-12px) !important;
+}
+
+.MuiChartsAxisHighlight-root {
+  stroke: white !important;
+}

@@ -22,6 +22,7 @@ type gradientColors = {
 type Colors = {
   text: string;
   background: string;
+  button: string;
   primary: string;
 };
 
@@ -38,6 +39,7 @@ const limeTheme: Theme = {
   colors: {
     text: "text-text",
     background: "bg-background",
+    button: "bg-gray-700",
     primary: "lime-medium",
   },
   highlightedTextColors: {
@@ -80,6 +82,7 @@ const iceTheme: Theme = {
   colors: {
     text: "text-text",
     background: "bg-background",
+    button: "bg-gray-700",
     primary: "ice-medium",
   },
   highlightedTextColors: {
@@ -122,6 +125,7 @@ const magentaTheme: Theme = {
   colors: {
     text: "text-text",
     background: "bg-background",
+    button: "bg-gray-700",
     primary: "magenta-medium",
   },
   highlightedTextColors: {
@@ -164,6 +168,7 @@ const flameTheme: Theme = {
   colors: {
     text: "text-text",
     background: "bg-background",
+    button: "bg-gray-700",
     primary: "flame-medium",
   },
   highlightedTextColors: {
