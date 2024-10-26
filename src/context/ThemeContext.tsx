@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  use,
+  useEffect,
+} from "react";
 import tailwindConfig from "../../tailwind.config";
 
 export enum Shade {
@@ -227,14 +234,17 @@ const THEME_KEY = "theme";
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [themeName, setThemeName] = useState<keyof typeof themes>(
-    (localStorage.getItem(THEME_KEY) as keyof typeof themes) || "lime"
-  );
+  const [themeName, setThemeName] = useState<keyof typeof themes>("lime");
 
   const switchTheme = (themeName: keyof typeof themes) => {
     localStorage.setItem(THEME_KEY, themeName);
     setThemeName(themeName);
   };
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem(THEME_KEY) as keyof typeof themes;
+    setThemeName(storedTheme);
+  }, []);
 
   return (
     <ThemeContext.Provider

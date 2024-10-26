@@ -32,7 +32,6 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
 
   useEffect(() => {
     const fetchedActivity = DataAccess.getActivityById(activityId);
-    console.log(activityId);
     setActivity(fetchedActivity || null);
   }, [activityId]);
 
@@ -41,7 +40,7 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
       setGoal(activity.goal); // Initialize goal from activity
       setGoalRate(activity.getGoalRate());
     }
-  }, [activity]);
+  }, [activityId]);
 
   useEffect(() => {
     if (activity) {

@@ -89,7 +89,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ activity }) => {
           ◀ Previous Year
         </StyledButton>
         <h2 className="text-xl text-white font-semibold">{year}</h2>
-        <StyledButton onClick={() => setYear(new Date().getFullYear())}>
+        <StyledButton onClick={() => setYear(year + 1)}>
           Next Year ▶
         </StyledButton>
       </div>
