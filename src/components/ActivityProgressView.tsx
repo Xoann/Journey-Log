@@ -90,7 +90,6 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
   };
 
   const handleDataUpload = (data: { date: string; value: number }[] | null) => {
-    console.log("Uploaded CSV Data:", data);
     if (activity) {
       data?.forEach((entry) => {
         DataAccess.addActivityEntry(activityId, entry.date, entry.value);
