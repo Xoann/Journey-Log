@@ -6,7 +6,9 @@ const formatDate = (dateString: string): string => {
     month: "long",
     day: "numeric",
   };
-  return new Date(dateString).toLocaleDateString(undefined, options);
+  const date = new Date(dateString);
+  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+  return date.toLocaleDateString(undefined, options);
 };
 
 const formatGraphDate = (date: Dayjs): string => {

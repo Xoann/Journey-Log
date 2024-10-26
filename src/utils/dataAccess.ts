@@ -75,11 +75,17 @@ export class Activity implements ActivityInterface {
     return dateMap;
   }
 
+  getSortedEntries(): ActivityEntry[] {
+    return this.entries.sort((a, b) =>
+      dayjs(a.date).isAfter(dayjs(b.date)) ? -1 : 1
+    );
+  }
+
   getEntryCumulativeData(): { dates: string[]; timeSpent: number[] } {
     const dateMap = new Map<string, number>(
       Array.from(this.getEntriesSet()).map(([date, timeSpent]) => [
         dayjs(date).format("YYYY-MM-DD"),
-        timeSpent,
+        Math.floor(timeSpent / 60),
       ])
     );
 
@@ -182,6 +188,24 @@ export class DataAccess {
         timeSpent,
       };
       activity.entries.push(newEntry);
+      this.saveActivities(activities);
+    }
+  }
+
+  static removeActivity(activityId: string): void {
+    const activities = this.getActivities();
+    const updatedActivities = activities.filter((act) => act.id !== activityId);
+    this.saveActivities(updatedActivities);
+  }
+
+  static removeActivityEntry(activityId: string, entryId: string): void {
+    const activities = this.getActivities();
+    const activity = activities.find((act) => act.id === activityId);
+
+    if (activity) {
+      activity.entries = activity.entries.filter(
+        (entry) => entry.id !== entryId
+      );
       this.saveActivities(activities);
     }
   }

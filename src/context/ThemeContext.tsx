@@ -222,14 +222,19 @@ interface ThemeContextProps {
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
+const THEME_KEY = "theme";
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [themeName, setThemeName] = useState<keyof typeof themes>("lime");
+  const [themeName, setThemeName] = useState<keyof typeof themes>(
+    (localStorage.getItem(THEME_KEY) as keyof typeof themes) || "lime"
+  );
 
-  const switchTheme = (themeName: keyof typeof themes) =>
+  const switchTheme = (themeName: keyof typeof themes) => {
+    localStorage.setItem(THEME_KEY, themeName);
     setThemeName(themeName);
+  };
 
   return (
     <ThemeContext.Provider

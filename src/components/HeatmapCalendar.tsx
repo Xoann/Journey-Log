@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Activity } from "@/utils/dataAccess";
 import { useTheme } from "@/context/ThemeContext";
+import StyledButton from "./StyledButton";
 
 interface HeatmapCalendarProps {
   activity: Activity;
@@ -84,19 +85,13 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ activity }) => {
   return (
     <div className="flex flex-col items-center mt-5">
       <div className="flex justify-between items-center w-full max-w-md">
-        <button
-          onClick={() => setYear(year - 1)}
-          className="px-3 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition duration-200"
-        >
+        <StyledButton onClick={() => setYear(year - 1)}>
           ◀ Previous Year
-        </button>
+        </StyledButton>
         <h2 className="text-xl text-white font-semibold">{year}</h2>
-        <button
-          onClick={() => setYear(year + 1)}
-          className="px-3 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition duration-200"
-        >
+        <StyledButton onClick={() => setYear(new Date().getFullYear())}>
           Next Year ▶
-        </button>
+        </StyledButton>
       </div>
 
       <div className="grid grid-cols-53 gap-1 mt-5">

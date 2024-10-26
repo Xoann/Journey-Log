@@ -11,16 +11,17 @@ const ThemeSwitcher = () => {
   };
 
   return (
-    <div className="relative inline-block text-left mt-5">
+    <div className="relative inline-block text-left">
       <div>
         <button
           type="button"
-          className="inline-flex justify-between w-full px-4 py-2 text-sm font-medium text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none"
+          className="inline-flex justify-between items-center w-36 h-10 px-4 py-2 text-sm font-medium text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none"
           onClick={() => setIsOpen(!isOpen)}
         >
-          {currentTheme.name.charAt(0).toUpperCase() +
-            currentTheme.name.slice(1)}{" "}
-          Theme
+          <div>
+            {currentTheme.name.charAt(0).toUpperCase() +
+              currentTheme.name.slice(1)}
+          </div>
           <svg
             className="w-5 h-5 ml-2 -mr-1"
             xmlns="http://www.w3.org/2000/svg"
@@ -36,10 +37,13 @@ const ThemeSwitcher = () => {
           </svg>
         </button>
       </div>
-
+      <div
+        className={`fixed inset-0 z-40 ${isOpen ? "block" : "hidden"}`}
+        onClick={() => setIsOpen(false)}
+      ></div>
       {isOpen && (
         <div
-          className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+          className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-gray-700 ring-1 ring-black ring-opacity-5 z-50"
           onClick={() => setIsOpen(false)}
         >
           <div
@@ -54,8 +58,8 @@ const ThemeSwitcher = () => {
                 onClick={() => handleThemeSelect(theme)}
                 className={`block w-full px-4 py-2 text-sm text-left ${
                   theme === currentTheme.name
-                    ? "bg-gray-100 text-gray-900 font-semibold"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    ? "bg-gray-600 text-white font-semibold"
+                    : "text-white hover:bg-gray-600"
                 }`}
                 role="menuitem"
               >

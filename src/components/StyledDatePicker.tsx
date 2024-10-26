@@ -94,50 +94,25 @@ const StyledDatePicker: React.FC<StyledDatePickerProps> = ({
     },
   };
 
-  // const textFieldSx = {
-  //   "& .MuiInputLabel-root": {
-  //     color: "white", // Change label color here
-  //   },
-  //   "& .MuiInputBase-input": {
-  //     color: "white", // Change text color here
-  //   },
-  //   "& .MuiOutlinedInput-root": {
-  //     "& fieldset": {
-  //       borderColor: "white", // Change border color here
-  //     },
-  //     "&:hover fieldset": {
-  //       borderColor: "white", // Change border color on hover here
-  //     },
-  //     "&.Mui-focused fieldset": {
-  //       borderColor: "white", // Change border color when focused here
-  //     },
-  //   },
-  //   "& .MuiSvgIcon-root": {
-  //     // Change icon color here
-  //     color: "white",
-  //   },
-  // };
-
   return (
-    <div>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DesktopDatePicker
-          label="Entry Date"
-          value={date}
-          onChange={onChange}
-          views={["month", "day"]} // Ensure the year view is included
-          showDaysOutsideCurrentMonth
-          slotProps={{
-            textField: {
-              sx: textFieldSx,
-            },
-            popper: {
-              sx: popperSx,
-            },
-          }}
-        />
-      </LocalizationProvider>
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DesktopDatePicker
+        label="Entry Date"
+        value={date}
+        onChange={onChange}
+        views={["month", "day"]} // Ensure the year view is included
+        showDaysOutsideCurrentMonth
+        slotProps={{
+          textField: {
+            sx: textFieldSx,
+            size: "small",
+          },
+          popper: {
+            sx: popperSx,
+          },
+        }}
+      />
+    </LocalizationProvider>
   );
 };
 

@@ -24,8 +24,6 @@ const StyledLineChart: React.FC<StyledLineChartrProps> = ({ activity }) => {
   const maxDate =
     dayjsDates.length > 0 ? dayjsDates[dayjsDates.length - 1] : dayjs();
 
-  console.log(dayjsDates.map((date) => formatGraphDate(date)));
-
   return (
     <LineChart
       xAxis={[

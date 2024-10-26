@@ -38,15 +38,18 @@ const config: Config = {
         },
         flame: {
           default: "#3B3C36",
-          low: "#FF7F7F",
-          mediumLow: "#FF5C5C",
-          medium: "#FF4C4C",
-          mediumHigh: "#FF1C1C",
-          high: "#BF0000",
+          low: "#fed974",
+          mediumLow: "#feb24e",
+          medium: "#fe6c36",
+          mediumHigh: "#e5191c",
+          high: "#be0027",
         },
       },
       gridTemplateColumns: {
         "53": "repeat(53, minmax(0, 1fr))",
+      },
+      width: {
+        "1056": "1056px",
       },
     },
   },

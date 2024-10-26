@@ -28,3 +28,7 @@ body {
 .MuiChartsAxisHighlight-root {
   stroke: white !important;
 }
+
+.MuiTextField-root {
+  height: 2.5rem !important;
+}

@@ -9,6 +9,9 @@ import dayjs, { Dayjs } from "dayjs";
 import { useTheme } from "@/context/ThemeContext";
 import StyledDatePicker from "@/components/StyledDatePicker";
 import StyledLineChart from "@/components/StyledLineChart";
+import EntryUpload from "@/components/EntryUpload";
+import ThemeSwitcher from "./ThemeSwitcher";
+import StyledButton from "./StyledButton";
 
 interface ActivityProgressViewProps {
   activityId: string;
@@ -68,6 +71,16 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
     }
   };
 
+  const handleDeleteEntry = (entryId: string) => {
+    if (activity) {
+      if (window.confirm("Are you sure you want to delete this entry?")) {
+        DataAccess.removeActivityEntry(activityId, entryId);
+        const updatedActivity = DataAccess.getActivityById(activityId);
+        setActivity(updatedActivity || null);
+      }
+    }
+  };
+
   const getShade = (actual: number, max: number): string => {
     const percentage = (actual / max) * 100;
     if (percentage >= 100) return currentTheme.highlightedTextColors.high;
@@ -77,78 +90,128 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
     return currentTheme.highlightedTextColors.low;
   };
 
+  const handleDataUpload = (data: { date: string; value: number }[] | null) => {
+    console.log("Uploaded CSV Data:", data);
+    if (activity) {
+      data?.forEach((entry) => {
+        DataAccess.addActivityEntry(activityId, entry.date, entry.value);
+      });
+      const updatedActivity = DataAccess.getActivityById(activityId);
+      setActivity(updatedActivity || null);
+    }
+  };
+
   const renderActivityDetails = () => {
+    if (!activity) return null;
     return (
       <div>
-        <div>
-          <h1>{activity?.name}</h1>
-          <div className="flex">
-            <p>Cumulative Time: </p>
-            <p className={`${getShade(100, 100)} font-bold`}>
-              {activity?.getCumulative()}
-            </p>
-          </div>
-          <div className="flex">
-            <p>Daily Average: </p>
-            <p
-              className={`${getShade(
-                activity?.getDailyAvg() || 0,
-                goal
-              )} font-bold`}
-            >
-              {Math.floor(activity?.getDailyAvg() || 0)}
-            </p>
-          </div>
-          <div className="flex">
-            <p>Total days: </p>
-            <p className={`${getShade(100, 100)} font-bold`}>
-              {activity?.getTotalTrackedDays()}
-            </p>
-          </div>
-          <div className="flex">
-            <p>Percentage goal hit: </p>
-            <p className={`${getShade(goalRate, 100)} font-bold`}>
-              {Math.floor(goalRate)}
-            </p>
-          </div>
-          <p>Daily goal:</p>
-          <NumberInput
-            value={goal}
-            onChange={setGoal}
-            placeholder="0"
-            min={0}
-          />
-        </div>
-        <div>
-          <p>Add entry:</p>
-          <StyledDatePicker date={date} onChange={setDate} />
-          <NumberInput
-            value={timeSpent}
-            onChange={setTimeSpent}
-            placeholder="0"
-            min={0}
-          />
-          <button onClick={handleAddEntry}>Add Entry</button>
-        </div>
-
-        {activity != null ? <StyledLineChart activity={activity} /> : null}
-        {activity != null ? <HeatmapCalendar activity={activity} /> : null}
-
-        <div>
-          {activity?.entries.map((entry) => (
-            <div key={entry.id} className="flex">
-              <p>{formatDate(entry.date)}</p>
-              <p>{formatTime(entry.timeSpent)}</p>
+        <section className="text-center pb-4">
+          <h1 className="text-center text-4xl">{activity?.name}</h1>
+        </section>
+        <section className="mb-14 grid grid-cols-2 gap-4">
+          <div className="flex items-center">
+            <div className="flex flex-col gap-5">
+              <div className="flex">
+                <p>
+                  Cumulative Time:{" "}
+                  <span className={`${getShade(100, 100)} font-bold`}>
+                    {Math.floor(activity.getCumulative() / 60)} hours
+                  </span>
+                </p>
+              </div>
+              <div className="flex">
+                <p>
+                  Daily Average:{" "}
+                  <span
+                    className={`${getShade(
+                      activity?.getDailyAvg() || 0,
+                      goal
+                    )} font-bold`}
+                  >
+                    {(activity.getDailyAvg() / 60).toFixed(2) || "0.00"} hours
+                  </span>
+                </p>
+              </div>
+              <div className="flex">
+                <p>
+                  Days loggin:{" "}
+                  <span className={`${getShade(100, 100)} font-bold`}>
+                    {activity?.getTotalTrackedDays()} days
+                  </span>
+                </p>
+              </div>
+              <div className="flex">
+                <p>
+                  Percentage goal hit:{" "}
+                  <span className={`${getShade(goalRate, 100)} font-bold`}>
+                    {Math.floor(goalRate)}%
+                  </span>
+                </p>
+              </div>
+              <div className="flex items-center">
+                <p className="mr-2">Daily goal (min): </p>
+                <NumberInput
+                  value={goal}
+                  onChange={setGoal}
+                  placeholder="0"
+                  min={0}
+                  unit="min"
+                />
+              </div>
             </div>
-          ))}
-        </div>
+          </div>
+          <StyledLineChart activity={activity} />
+        </section>
+
+        <section className="mb-10">
+          <HeatmapCalendar activity={activity} />
+        </section>
+
+        <section className="flex flex-col items-center">
+          <div className="flex gap-4 py-4 items-stretch mb-8">
+            <StyledDatePicker date={date} onChange={setDate} />
+            <NumberInput
+              title="time spent (min)"
+              value={timeSpent}
+              onChange={setTimeSpent}
+              placeholder="0"
+              min={0}
+              large
+            />
+            <StyledButton onClick={handleAddEntry}>Add Entry</StyledButton>
+          </div>
+          <div className="mb-8">
+            <EntryUpload onDataUpload={handleDataUpload} />
+          </div>
+          <div className="flex flex-col gap-1 items-center">
+            <h2 className="text-xl mb-3">Entries</h2>
+            {activity.getSortedEntries().map((entry) => (
+              <div
+                key={entry.id}
+                className="flex justify-between w-60  border-white"
+              >
+                <p>{formatDate(entry.date)}</p>
+                <p>{formatTime(entry.timeSpent)}</p>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => handleDeleteEntry(entry.id)}
+                >
+                  ✖
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     );
   };
 
   return (
-    <div>
-      <div onClick={handleActivityViewClick}>Back</div>
+    <div className="w-1056">
+      <div className="flex justify-between">
+        <StyledButton onClick={handleActivityViewClick}>← Back</StyledButton>
+        <ThemeSwitcher />
+      </div>
       <div>
         {activity ? renderActivityDetails() : <p>Activity not found</p>}
       </div>
