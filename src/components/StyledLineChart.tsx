@@ -16,7 +16,7 @@ const StyledLineChart: React.FC<StyledLineChartrProps> = ({ activity }) => {
   const dayjsDates = dates.map((date) => dayjs(date));
   const { currentTheme } = useTheme();
 
-  const highlightColor = currentTheme.getShade(Shade.High);
+  const highlightColor = currentTheme?.getShade(Shade.High);
 
   // Calculate min and max dates
   const minDate =

@@ -47,10 +47,10 @@ const ActivityView: React.FC<ActivityViewProps> = ({ setCurrView }) => {
       </div>
       <h1 className="text-4xl my-14">
         Welcome to{" "}
-        <span className={`${currentTheme.highlightedTextColors.mediumHigh}`}>
+        <span className={`${currentTheme?.highlightedTextColors.mediumHigh}`}>
           Journey{" "}
         </span>
-        <span className={`${currentTheme.highlightedTextColors.high}`}>
+        <span className={`${currentTheme?.highlightedTextColors.high}`}>
           Logger
         </span>
       </h1>

@@ -32,7 +32,7 @@ const HeatmapCalendar: React.FC<HeatmapCalendarProps> = ({ activity }) => {
       medium,
       mediumHigh,
       high,
-    } = currentTheme.heatmapColors;
+    } = currentTheme?.heatmapColors;
     if (!timeSpent) return defaultColor;
     if (timeSpent >= activity.goal * 1.3) return high;
     if (timeSpent >= activity.goal) return mediumHigh;

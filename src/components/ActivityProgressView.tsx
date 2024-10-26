@@ -82,11 +82,11 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
 
   const getShade = (actual: number, max: number): string => {
     const percentage = (actual / max) * 100;
-    if (percentage >= 100) return currentTheme.highlightedTextColors.high;
-    if (percentage >= 75) return currentTheme.highlightedTextColors.mediumHigh;
-    if (percentage >= 50) return currentTheme.highlightedTextColors.medium;
-    if (percentage >= 25) return currentTheme.highlightedTextColors.mediumLow;
-    return currentTheme.highlightedTextColors.low;
+    if (percentage >= 100) return currentTheme?.highlightedTextColors.high;
+    if (percentage >= 75) return currentTheme?.highlightedTextColors.mediumHigh;
+    if (percentage >= 50) return currentTheme?.highlightedTextColors.medium;
+    if (percentage >= 25) return currentTheme?.highlightedTextColors.mediumLow;
+    return currentTheme?.highlightedTextColors.low;
   };
 
   const handleDataUpload = (data: { date: string; value: number }[] | null) => {

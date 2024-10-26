@@ -20,11 +20,11 @@ const StyledDatePicker: React.FC<StyledDatePickerProps> = ({
 }) => {
   const { currentTheme } = useTheme();
   const [selectedColor, setSelectedColor] = useState<string>(
-    currentTheme.getShade(Shade.High)
+    currentTheme?.getShade(Shade.High)
   );
 
   useEffect(() => {
-    setSelectedColor(currentTheme.getShade(Shade.High));
+    setSelectedColor(currentTheme?.getShade(Shade.High));
   }, [currentTheme]);
 
   const popperSx = {

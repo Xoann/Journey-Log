@@ -2,7 +2,7 @@
 
 ### App Platform
 
-This app is a web app deployed at [Jouneylog](google.com)
+This app is a web app deployed at [Jouneylog](https://journeylog.netlify.app)
 
 ### Tech Stack
 

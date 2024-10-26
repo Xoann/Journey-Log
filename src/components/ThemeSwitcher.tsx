@@ -19,8 +19,8 @@ const ThemeSwitcher = () => {
           onClick={() => setIsOpen(!isOpen)}
         >
           <div>
-            {currentTheme.name.charAt(0).toUpperCase() +
-              currentTheme.name.slice(1)}
+            {currentTheme?.name.charAt(0).toUpperCase() +
+              currentTheme?.name.slice(1)}
           </div>
           <svg
             className="w-5 h-5 ml-2 -mr-1"
@@ -57,7 +57,7 @@ const ThemeSwitcher = () => {
                 key={theme}
                 onClick={() => handleThemeSelect(theme)}
                 className={`block w-full px-4 py-2 text-sm text-left ${
-                  theme === currentTheme.name
+                  theme === currentTheme?.name
                     ? "bg-gray-600 text-white font-semibold"
                     : "text-white hover:bg-gray-600"
                 }`}
