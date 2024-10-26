@@ -24,6 +24,9 @@ body {
 .css-175e1i1-MuiChartsAxis-root-MuiChartsYAxis-root .MuiChartsAxis-label {
   transform: translateX(-12px) !important;
 }
+.MuiChartsAxis-directionY .MuiChartsAxis-label {
+  transform: translateX(-12px) !important;
+}
 
 .MuiChartsAxisHighlight-root {
   stroke: white !important;
