@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Head from "next/head";
 
 export default function Home() {
   const [currView, setCurrView] = useState<"activity" | "progress">("activity");
@@ -24,6 +25,7 @@ export default function Home() {
 
   return (
     <ThemeProvider>
+      <title>Jounrey Log</title>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <main className="bg-background text-text">
           <div className="flex justify-items-center min-h-screen justify-center p-8">
