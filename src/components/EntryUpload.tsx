@@ -134,9 +134,9 @@ const CSVUpload: React.FC<CSVUploadProps> = ({ onDataUpload }) => {
             </ul>
             <p>Example:</p>
             <pre>
-              01/01/2023, 100
+              01/01/2023,100
               <br />
-              02/01/2023, 200
+              02/01/2023,200
             </pre>
           </div>
         )}

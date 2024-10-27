@@ -25,10 +25,10 @@ export default function Home() {
 
   return (
     <ThemeProvider>
-      <title>Jounrey Log</title>
+      <title>Journey Log</title>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <main className="bg-background text-text">
-          <div className="flex justify-items-center min-h-screen justify-center p-8">
+          <div className="flex justify-items-center min-h-screen justify-center p-8 w-full">
             {currView === "activity" ? (
               <ActivityView setCurrView={handleSetCurrView} />
             ) : (

@@ -65,6 +65,9 @@ const StyledDatePicker: React.FC<StyledDatePickerProps> = ({
     "& .MuiTypography-root": {
       color: "white", // Change text color here
     },
+    "&. MuiPickersDay-today": {
+      backgroundColor: "white",
+    },
   };
 
   const textFieldSx = {

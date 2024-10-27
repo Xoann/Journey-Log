@@ -102,7 +102,7 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
   const renderActivityDetails = () => {
     if (!activity) return null;
     return (
-      <div>
+      <div className="w-full">
         <section className="text-center pb-4">
           <h1 className="text-center text-4xl">{activity?.name}</h1>
         </section>
@@ -132,7 +132,7 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
               </div>
               <div className="flex">
                 <p>
-                  Days loggin:{" "}
+                  Days logging:{" "}
                   <span className={`${getShade(100, 100)} font-bold`}>
                     {activity?.getTotalTrackedDays()} days
                   </span>
@@ -161,7 +161,7 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
           <StyledLineChart activity={activity} />
         </section>
 
-        <section className="mb-10">
+        <section className="mb-10 w-full">
           <HeatmapCalendar activity={activity} />
         </section>
 
