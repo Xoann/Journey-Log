@@ -51,7 +51,7 @@ const ActivityView: React.FC<ActivityViewProps> = ({ setCurrView }) => {
           Journey{" "}
         </span>
         <span className={`${currentTheme?.highlightedTextColors.high}`}>
-          Logger
+          Log
         </span>
       </h1>
       <div title="add activity" className="mb-4 flex gap-4">
