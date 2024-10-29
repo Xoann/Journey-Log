@@ -33,12 +33,9 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
   useEffect(() => {
     const fetchedActivity = DataAccess.getActivityById(activityId);
     setActivity(fetchedActivity || null);
-  }, [activityId]);
-
-  useEffect(() => {
-    if (activity) {
-      setGoal(activity.goal); // Initialize goal from activity
-      setGoalRate(activity.getGoalRate());
+    if (fetchedActivity) {
+      setGoal(fetchedActivity.goal);
+      setGoalRate(fetchedActivity.getGoalRate());
     }
   }, [activityId]);
 
@@ -164,6 +161,14 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
         <section className="mb-10 w-full">
           <HeatmapCalendar activity={activity} />
         </section>
+
+        <StyledButton
+          onClick={() => {
+            console.log(activity);
+          }}
+        >
+          Test
+        </StyledButton>
 
         <section className="flex flex-col items-center">
           <div className="flex gap-4 py-4 items-stretch mb-8">
