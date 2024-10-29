@@ -161,15 +161,6 @@ const ActivityProgressView: React.FC<ActivityProgressViewProps> = ({
         <section className="mb-10 w-full">
           <HeatmapCalendar activity={activity} />
         </section>
-
-        <StyledButton
-          onClick={() => {
-            console.log(activity);
-          }}
-        >
-          Test
-        </StyledButton>
-
         <section className="flex flex-col items-center">
           <div className="flex gap-4 py-4 items-stretch mb-8">
             <StyledDatePicker date={date} onChange={setDate} />
